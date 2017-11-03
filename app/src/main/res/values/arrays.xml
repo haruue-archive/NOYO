@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="role">
+        <item>消费者</item>
+        <item>农户</item>
+    </string-array>
+    <string-array name="register_role">
+        <item>注册消费者账户</item>
+        <item>注册农户账户</item>
+    </string-array>
+    <string-array name="role_value">
+        <item>consumer</item>
+        <item>farmer</item>
+    </string-array>
+
+</resources>

@@ -16,6 +16,20 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".LoginActivity"
+                  android:label="@string/login">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SplashActivity"/>
+        </activity>
+        <activity android:name=".RegisterActivity"
+                  android:label="@string/register">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SplashActivity"/>
+        </activity>
 
     </application>
 </manifest>

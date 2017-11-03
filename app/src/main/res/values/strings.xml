@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">NOYO</string>
     <string name="happy_experience">用心体验快乐</string>
+    <string name="register">注册</string>
+    <string name="login">登录</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="email">邮箱</string>
+    <string name="nick">昵称</string>
+    <string name="username_or_email">用户名/邮箱</string>
 </resources>
