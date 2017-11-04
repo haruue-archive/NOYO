@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/item_home"
+          android:title="@string/home"
+          android:icon="@drawable/ic_home_white_24dp"
+          android:fragment="moe.haruue.noyo.fragment.HomeFragment"/>
+
+    <item android:id="@+id/item_all"
+          android:title="@string/all"
+          android:icon="@drawable/ic_widgets_white_24dp"
+          android:fragment="moe.haruue.noyo.fragment.AllFragment"/>
+
+    <item android:id="@+id/item_order"
+          android:title="@string/order"
+          android:icon="@drawable/ic_library_books_white_24dp"
+          android:fragment="moe.haruue.noyo.fragment.OrderFragment"/>
+
+    <item android:id="@+id/item_person"
+          android:title="@string/my"
+          android:icon="@drawable/ic_person_white_24dp"
+          android:fragment="moe.haruue.noyo.fragment.MyFragment"/>
+
+</menu>
