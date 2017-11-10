@@ -18,4 +18,8 @@
     <string name="pre_sell">产品预售</string>
     <string name="tip_un_login">你还没有登录</string>
     <string name="tip_choose_location">请选择您所在的地区</string>
+    <string name="market_condition">市场行情</string>
+    <string name="unit_yuan_jin">(单位: 元/市斤)</string>
+    <string name="more"><![CDATA[更多>>]]></string>
+    <string name="format_price">￥%1$.2f</string>
 </resources>
