@@ -22,7 +22,7 @@
             android:paddingRight="12dp">
 
             <TextView
-                android:id="@+id/cityTextView"
+                android:id="@+id/provinceTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -35,8 +35,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:editable="false"
                 android:background="@android:color/white"
-                android:layout_toRightOf="@id/cityTextView"
+                android:layout_toRightOf="@id/provinceTextView"
                 android:hint="@string/hint_search"
                 android:textSize="15sp"
                 android:layout_marginLeft="5dp"

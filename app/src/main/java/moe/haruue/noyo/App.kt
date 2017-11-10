@@ -2,6 +2,7 @@ package moe.haruue.noyo
 
 import android.app.Application
 import moe.haruue.noyo.model.User
+import moe.haruue.noyo.utils.debug
 
 /**
  *
@@ -14,9 +15,18 @@ class App : Application() {
             private set
     }
 
-    var user: User? = null
+    var user: User = User.INVALID_USER
+        get() {
+            debug {
+                if (field == User.INVALID_USER) {
+                    field = User("123456", "haruue", "", "i@haruue.moe", "Haruue Icymoon", User.ROLE_CONSUMER, "重庆")
+                }
+            }
+            return field
+        }
 
-    val logined = user != null
+    inline val logined
+        get() = user != User.INVALID_USER
 
     override fun onCreate() {
         super.onCreate()

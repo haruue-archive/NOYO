@@ -14,4 +14,8 @@
     <string name="all">大全</string>
     <string name="order">订单</string>
     <string name="my">我的</string>
+    <string name="farm_rent">土地租赁</string>
+    <string name="pre_sell">产品预售</string>
+    <string name="tip_un_login">你还没有登录</string>
+    <string name="tip_choose_location">请选择您所在的地区</string>
 </resources>

@@ -1,7 +1,14 @@
 package moe.haruue.noyo
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
+import moe.haruue.noyo.utils.logd
+import moe.haruue.noyo.utils.startActivity
+import moe.haruue.noyo.utils.startActivityForResult
+import moe.haruue.noyo.utils.toast
 
 /**
  *
@@ -9,9 +16,36 @@ import android.support.v7.app.AppCompatActivity
  */
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        const val REQUEST_PROVINCE = 0x51
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if (!App.instance.logined) {
+            toast(R.string.tip_un_login)
+            startActivity<SplashActivity>()
+            finish()
+            return
+        }
+        onReloadProvince()
+        provinceTextView.setOnClickListener {
+            startActivityForResult<ProvinceChooserActivity>(REQUEST_PROVINCE)
+        }
     }
+
+    fun onReloadProvince() {
+        logd("onReloadProvince(): App.instance.user.province=${App.instance.user.province}")
+        provinceTextView.text = App.instance.user.province
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            REQUEST_PROVINCE -> if (resultCode == Activity.RESULT_OK) { onReloadProvince() }
+        }
+    }
+
 
 }
