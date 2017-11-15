@@ -14,6 +14,8 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_all.*
 import moe.haruue.noyo.R
 import moe.haruue.noyo.model.PriceItem
+import moe.haruue.noyo.utils.TextViewPriceDelegate
+import moe.haruue.noyo.utils.TextViewStringDelegate
 
 /**
  *
@@ -83,16 +85,8 @@ class AllFragment : Fragment() {
         private class PriceItemViewHolder(parent: ViewGroup, viewType: Int) : BaseViewHolder(parent, R.layout.item_all_price, viewType) {
             private val nameView = itemView.findViewById<TextView>(android.R.id.text1)
             private val priceView = itemView.findViewById<TextView>(android.R.id.text2)
-            inline var name: String
-                get() = nameView.text.toString()
-                set(value) {
-                    nameView.text = value
-                }
-            inline var price: Double
-                get() = priceView.text.toString().removePrefix("￥").toDouble()
-                set(value) {
-                    priceView.text = itemView.context.getString(R.string.format_price, value)
-                }
+            var name by TextViewStringDelegate(nameView)
+            var price by TextViewPriceDelegate(priceView)
         }
 
         private class HeaderViewHolder(parent: ViewGroup, viewType: Int) : BaseViewHolder(parent, R.layout.item_all_header, viewType)
