@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="bg_ht_white">#5fff</color>
     <color name="bg_ht_tag_black">#5000</color>
+    <color name="bg_div_list">#5555</color>
 </resources>

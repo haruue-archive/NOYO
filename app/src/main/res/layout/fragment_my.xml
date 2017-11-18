@@ -1,12 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="fragment_my"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nicknameView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@string/nick"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"/>
+
+            <TextView
+                android:id="@+id/usernameView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@string/username"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/emailView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@string/email"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/bg_div_list"/>
+
+        <TextView
+            android:id="@+id/modifyNicknameItemButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/modify_nickname"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/bg_div_list"/>
+
+        <TextView
+            android:id="@+id/modifyEmailItemButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/modify_email"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/bg_div_list"/>
+
+        <TextView
+            android:id="@+id/modifyPasswordItemButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/modify_password"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/bg_div_list"/>
+
+        <TextView
+            android:id="@+id/logoutItemButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="15dp"
+            android:text="@string/logout"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:background="@android:color/holo_red_dark"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
