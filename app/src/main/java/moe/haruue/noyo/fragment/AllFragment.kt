@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_all.*
 import moe.haruue.noyo.R
-import moe.haruue.noyo.model.PriceItem
+import moe.haruue.noyo.model.Goods
 import moe.haruue.noyo.utils.TextViewPriceDelegate
 import moe.haruue.noyo.utils.TextViewStringDelegate
 
@@ -41,20 +41,20 @@ class AllFragment : Fragment() {
             const val VT_HEADER = 0x0
             const val VT_PRICE = 0x1
             val PRICE_DATA = arrayOf(
-                    PriceItem("白鲢活鱼", 6.5),
-                    PriceItem("白萝卜", 0.55),
-                    PriceItem("白条鸡", 18.0),
-                    PriceItem("菜油（散装）", 10.8),
-                    PriceItem("葱头", 2.0),
-                    PriceItem("大白菜", 1.1),
-                    PriceItem("大葱", 3.2),
-                    PriceItem("大米", 3.72),
-                    PriceItem("冬瓜", 1.2),
-                    PriceItem("豆角", 6.2),
-                    PriceItem("富士苹果", 9.8),
-                    PriceItem("胡萝卜", 2.4),
-                    PriceItem("黄瓜", 3.7),
-                    PriceItem("活草鱼", 15.5)
+                    Goods("白鲢活鱼", 6.5),
+                    Goods("白萝卜", 0.55),
+                    Goods("白条鸡", 18.0),
+                    Goods("菜油（散装）", 10.8),
+                    Goods("葱头", 2.0),
+                    Goods("大白菜", 1.1),
+                    Goods("大葱", 3.2),
+                    Goods("大米", 3.72),
+                    Goods("冬瓜", 1.2),
+                    Goods("豆角", 6.2),
+                    Goods("富士苹果", 9.8),
+                    Goods("胡萝卜", 2.4),
+                    Goods("黄瓜", 3.7),
+                    Goods("活草鱼", 15.5)
             )
         }
 
@@ -69,7 +69,7 @@ class AllFragment : Fragment() {
                 is HeaderViewHolder -> {}
                 is PriceItemViewHolder -> {
                     val index = position - 1
-                    holder.name = PRICE_DATA[index].name
+                    holder.name = PRICE_DATA[index].title
                     holder.price = PRICE_DATA[index].price
                 }
             }

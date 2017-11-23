@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import moe.haruue.noyo.model.User
+import moe.haruue.noyo.model.Member
 import moe.haruue.noyo.utils.logd
 
 /**
@@ -36,8 +36,8 @@ class ProvinceChooserActivity : AppCompatActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = ProvinceItemAdapter {
             logd("ProvinceItemAdapter: province=$it")
-            App.instance.user.province = it
-            App.instance.user.sync(true)
+            App.instance.member.province = it
+            App.instance.member.sync(true)
             val resultIntent = Intent()
             resultIntent.putExtra(EXTRA_PROVINCE, it)
             setResult(Activity.RESULT_OK, resultIntent)
@@ -52,12 +52,12 @@ class ProvinceChooserActivity : AppCompatActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ProvinceItemViewHolder(parent)
 
-        override fun getItemCount() = User.PROVINCES.size
+        override fun getItemCount() = Member.PROVINCES.size
 
         override fun onBindViewHolder(holder: ProvinceItemViewHolder, position: Int) {
-            holder.text.text = User.PROVINCES[position]
+            holder.text.text = Member.PROVINCES[position]
             holder.setOnClickListener {
-                onProvinceSelectedListener(User.PROVINCES[position])
+                onProvinceSelectedListener(Member.PROVINCES[position])
             }
 
         }

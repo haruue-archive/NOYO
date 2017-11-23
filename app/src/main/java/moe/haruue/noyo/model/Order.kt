@@ -8,10 +8,18 @@ import com.google.gson.annotations.SerializedName
  */
 data class Order(
         @SerializedName("_id") val id: String,
+        val goodsId: String,
         val title: String,
         val summary: String,
+        val count: Int,
+        val price: Double,
+        val image: String?,
+        @Goods.Type val type: String,
+        val seller: String,
+        val buyer: String,
         val status: Int,
-        val price: Double
+        val address: String,
+        val external: String
 ) {
     companion object {
         const val STATUS_WAITING_PAY = 0

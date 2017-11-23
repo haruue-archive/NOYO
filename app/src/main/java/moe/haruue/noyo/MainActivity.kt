@@ -36,8 +36,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onReloadProvince() {
-        logd("onReloadProvince(): App.instance.user.province=${App.instance.user.province}")
-        provinceTextView.text = App.instance.user.province
+        logd("onReloadProvince(): App.instance.user.province=${App.instance.member.province}")
+        provinceTextView.text = App.instance.member.province
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

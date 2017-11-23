@@ -41,9 +41,9 @@ class MyFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        nicknameView.text = App.instance.user.nickname
-        usernameView.text = App.instance.user.username
-        emailView.text = App.instance.user.email
+        nicknameView.text = App.instance.member.nickname
+        usernameView.text = App.instance.member.username
+        emailView.text = App.instance.member.email
     }
 
 }

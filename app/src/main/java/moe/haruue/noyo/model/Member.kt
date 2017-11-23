@@ -6,17 +6,18 @@ import com.google.gson.annotations.SerializedName
  *
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
-class User(
+class Member(
         @SerializedName("_id") var id: String?,
         var username: String,
+        var nickname: String,
         var password: String?,
         var email: String,
-        var nickname: String,
-        var role: String,
+        val city: String,
+        val role: String,
         province: String
 ) {
 
-    @SerializedName("province")
+    @SerializedName("city")
     var province: String = province
         get() {
             return if (field in PROVINCES) {
@@ -38,7 +39,7 @@ class User(
     }
 
     companion object {
-        val INVALID_USER = User("-1", "", "", "", "", "", "")
+        val INVALID_USER = Member("-1", "", "", "", "", "", "", "")
         const val ROLE_CONSUMER = "consumer"
         const val ROLE_FARMER = "farmer"
         val DEFAULT_PROVINCE = "北京"
