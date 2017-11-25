@@ -19,7 +19,7 @@ class App : Application() {
         get() {
             debug {
                 if (field == Member.INVALID_USER) {
-                    field = Member("123456", "haruue", "", "i@haruue.moe", "Haruue Icymoon", Member.ROLE_CONSUMER, "重庆")
+                    field = Member("123456", "haruue", "Haruue Icymoon", "", "i@haruue.moe", Member.ROLE_CONSUMER, "重庆", mutableListOf())
                 }
             }
             return field

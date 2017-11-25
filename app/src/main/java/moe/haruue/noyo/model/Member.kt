@@ -1,21 +1,27 @@
 package moe.haruue.noyo.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import moe.haruue.noyo.utils.parcelableCreatorOf
+import moe.haruue.noyo.utils.readMutableList
 
 /**
  *
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
+@Suppress("MemberVisibilityCanPrivate")
 class Member(
-        @SerializedName("_id") var id: String?,
-        var username: String,
-        var nickname: String,
-        var password: String?,
-        var email: String,
-        val city: String,
-        val role: String,
-        province: String
-) {
+        @SerializedName("_id") var id: String? = "",
+        var username: String = "",
+        var nickname: String = "",
+        var password: String? = "",
+        var email: String = "",
+        province: String = DEFAULT_PROVINCE,
+        val role: String = "",
+        val orders: MutableList<Order> = mutableListOf()
+) : Parcelable {
+
 
     @SerializedName("city")
     var province: String = province
@@ -34,12 +40,22 @@ class Member(
             }
         }
 
+    constructor(parcel: Parcel) : this(
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readMutableList())
+
     fun sync(preferUpload: Boolean) {
         // TODO: implement it to upload or download userdata
     }
 
     companion object {
-        val INVALID_USER = Member("-1", "", "", "", "", "", "", "")
+        val INVALID_USER = Member("-1", "", "", "", "", "", "", mutableListOf())
         const val ROLE_CONSUMER = "consumer"
         const val ROLE_FARMER = "farmer"
         val DEFAULT_PROVINCE = "北京"
@@ -79,6 +95,23 @@ class Member(
                 "澳门",
                 "台湾"
         )
+
+        @Suppress("unused")
+        val CREATOR = parcelableCreatorOf<Member>()
+
     }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
+        parcel.writeString(username)
+        parcel.writeString(nickname)
+        parcel.writeString(password)
+        parcel.writeString(email)
+        parcel.writeString(province)
+        parcel.writeString(role)
+        parcel.writeList(orders)
+    }
+
+    override fun describeContents(): Int = 0
 
 }

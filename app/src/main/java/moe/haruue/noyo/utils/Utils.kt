@@ -5,6 +5,8 @@ package moe.haruue.noyo.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Parcel
+import android.os.Parcelable
 import android.support.annotation.IntDef
 import android.support.annotation.StringRes
 import android.util.Log
@@ -70,3 +72,16 @@ fun Any.logw(msg: String, e: Throwable? = null) = internalLog(Log::w, Log::w, th
 fun Any.loge(msg: String, e: Throwable? = null) = internalLog(Log::e, Log::e, this.javaClass.simpleName, msg, e)
 
 fun Any.logwtf(msg: String, e: Throwable? = null) = internalLog(Log::wtf, Log::wtf, this.javaClass.simpleName, msg, e)
+
+inline fun <reified T : Parcelable> parcelableCreatorOf(): Parcelable.Creator<T> = object : Parcelable.Creator<T> {
+    override fun newArray(size: Int): Array<T?> = arrayOfNulls(size)
+
+    override fun createFromParcel(source: Parcel?): T {
+        return T::class.java.getDeclaredConstructor(Parcel::class.java)
+                .newInstance(source)
+    }
+}
+
+inline fun <reified T> Parcel.readMutableList(): MutableList<T> {
+    return readArrayList(T::class.java.classLoader) as MutableList<T>
+}
