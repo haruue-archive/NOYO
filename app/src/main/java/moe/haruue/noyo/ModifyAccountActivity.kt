@@ -5,8 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntDef
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import kotlinx.android.synthetic.main.activity_modify_account.*
+import moe.haruue.noyo.api.ApiServices
+import moe.haruue.noyo.model.APIErrorList
+import moe.haruue.noyo.utils.createApiSubscriber
+import moe.haruue.noyo.utils.isValidateEmail
+import moe.haruue.noyo.utils.toast
+import rx.Subscription
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 /**
  *
@@ -31,6 +40,8 @@ class ModifyAccountActivity : BaseActivity() {
 
     @What val what by lazy { intent?.getIntExtra(EXTRA_WHAT, WHAT_NICKNAME) ?: WHAT_NICKNAME }
 
+    private var apiAccountUpdateSubscription: Subscription? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_modify_account)
@@ -49,6 +60,60 @@ class ModifyAccountActivity : BaseActivity() {
             }
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        button1.setOnClickListener {
+            val paramWhat = when (what) {
+                WHAT_EMAIL -> "email"
+                WHAT_NICKNAME -> "nickname"
+                else -> "nickname"
+            }
+
+            val paramValue = edit.text.toString()
+
+            if (what == WHAT_EMAIL) {
+                if (paramValue.isEmpty()) {
+                    text1.error = "邮箱不能为空"
+                }
+                if (!paramValue.isValidateEmail()) {
+                    text1.error = "邮箱格式错误"
+                }
+            }
+
+            button1.visibility = View.INVISIBLE
+            progress.visibility = View.VISIBLE
+
+            apiAccountUpdateSubscription = ApiServices.v1service.accountUpdate(paramWhat, paramValue)
+                    .subscribeOn(Schedulers.io())
+                    .unsubscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(createApiSubscriber {
+                        onNext = {
+                            App.instance.member = it.data ?: App.instance.member
+                        }
+                        onApiError = {
+                            when (it.errno) {
+                                APIErrorList.emailMalformed -> { text1.error = "邮箱格式错误" }
+                                APIErrorList.emailUsed -> { text1.error = "此邮箱已被注册" }
+                            }
+                        }
+                        onComplete = {
+                            toast("修改成功")
+                            finish()
+                        }
+                        onFinally = {
+                            button1.visibility = View.VISIBLE
+                            progress.visibility = View.INVISIBLE
+                        }
+                    })
+
+
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        apiAccountUpdateSubscription?.unsubscribe()
     }
 
     @IntDef(WHAT_NICKNAME.toLong(),

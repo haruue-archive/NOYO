@@ -4,10 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
-import moe.haruue.noyo.utils.logd
-import moe.haruue.noyo.utils.startActivity
-import moe.haruue.noyo.utils.startActivityForResult
-import moe.haruue.noyo.utils.toast
+import moe.haruue.noyo.api.ApiServices
+import moe.haruue.noyo.utils.*
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 /**
  *
@@ -32,6 +32,18 @@ class MainActivity : BaseActivity() {
         provinceTextView.setOnClickListener {
             startActivityForResult<ProvinceChooserActivity>(REQUEST_PROVINCE)
         }
+        ApiServices.v1service.accountInfo()
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(createApiSubscriber {
+                    onNext = {
+                        App.instance.member = it.data ?: App.instance.member
+                    }
+                    onApiError = {
+                        toast("同步用户信息失败")
+                    }
+                })
     }
 
     fun onReloadProvince() {
