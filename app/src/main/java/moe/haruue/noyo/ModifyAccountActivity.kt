@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntDef
-import android.support.v7.app.AppCompatActivity
 import android.view.inputmethod.EditorInfo
 import kotlinx.android.synthetic.main.activity_modify_account.*
 
@@ -13,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_modify_account.*
  *
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
-class ModifyAccountActivity : AppCompatActivity() {
+class ModifyAccountActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_WHAT = "what"

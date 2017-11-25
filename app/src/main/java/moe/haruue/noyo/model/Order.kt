@@ -12,18 +12,18 @@ import moe.haruue.noyo.utils.parcelableCreatorOf
 @Suppress("MemberVisibilityCanPrivate")
 data class Order(
         @SerializedName("_id") val id: String,
-        val goodsId: String = "",
-        val title: String = "",
-        val summary: String = "",
-        val count: Int = 0,
-        val price: Double = 0.0,
-        val image: String? = "",
-        @Goods.Type val type: String = "",
-        val seller: String = "",
-        val buyer: String = "",
-        val status: Int = STATUS_WAITING_PAY,
-        val address: String = "",
-        val external: String = ""
+        var goodsId: String = "",
+        var title: String = "",
+        var summary: String = "",
+        var count: Int = 0,
+        var price: Double = 0.0,
+        var image: String? = "",
+        @Goods.Type var type: String = "",
+        var seller: String = "",
+        var buyer: String = "",
+        var status: Int = STATUS_WAITING_PAY,
+        var address: String = "",
+        var external: String = ""
 ) : Parcelable {
     @Suppress("unused")
     constructor(parcel: Parcel) : this(

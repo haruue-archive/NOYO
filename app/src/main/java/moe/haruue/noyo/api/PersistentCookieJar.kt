@@ -1,10 +1,12 @@
 package moe.haruue.noyo.api
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import moe.haruue.noyo.App
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
-import java.io.*
+import java.io.File
 
 
 /**
@@ -12,6 +14,10 @@ import java.io.*
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
 class PersistentCookieJar : CookieJar {
+
+    companion object {
+        val gson = Gson()
+    }
 
     private val cookieDir by lazy {
         File(App.instance.filesDir, "cookies")
@@ -21,16 +27,19 @@ class PersistentCookieJar : CookieJar {
 
     override fun saveFromResponse(url: HttpUrl, cookies: MutableList<Cookie>) {
         val file = cookieFileForUrl(url)
-        val oos = ObjectOutputStream(BufferedOutputStream(file.outputStream()))
-        oos.writeObject(cookies)
+        val json = gson.toJson(cookies)
+        file.writeText(json)
     }
 
     override fun loadForRequest(url: HttpUrl): MutableList<Cookie> {
         val file = cookieFileForUrl(url)
-        val ois = ObjectInputStream(BufferedInputStream(file.inputStream()))
-        @Suppress("UNCHECKED_CAST")
-        val cookies = ois.readObject() as MutableList<Cookie>?
-        return cookies ?: mutableListOf()
+        var cookies: MutableList<Cookie>? = null
+        if (file.exists()) {
+            val json = file.readText()
+            cookies = gson.fromJson(json, object : TypeToken<MutableList<Cookie>>(){}.type)
+        }
+        cookies = cookies ?: mutableListOf()
+        return cookies
     }
 
 }

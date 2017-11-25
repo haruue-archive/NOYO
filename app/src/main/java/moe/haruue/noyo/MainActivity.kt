@@ -3,7 +3,6 @@ package moe.haruue.noyo
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import moe.haruue.noyo.utils.logd
 import moe.haruue.noyo.utils.startActivity
@@ -14,7 +13,7 @@ import moe.haruue.noyo.utils.toast
  *
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     companion object {
         const val REQUEST_PROVINCE = 0x51

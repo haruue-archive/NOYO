@@ -9,7 +9,9 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.support.annotation.IntDef
 import android.support.annotation.StringRes
+import android.support.design.widget.TextInputLayout
 import android.util.Log
+import android.widget.EditText
 import android.widget.Toast
 import moe.haruue.noyo.BuildConfig
 
@@ -30,17 +32,27 @@ fun Context.toast(@StringRes resId: Int, @Duration duration: Int = Toast.LENGTH_
     Toast.makeText(applicationContext, resId, duration).show()
 }
 
-inline fun <reified T> Context.startActivity() {
+inline fun <reified T> Context.startActivity(block: Intent.() -> Unit) {
     val intent = Intent(this, T::class.java)
     if (this !is Activity) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
+    intent.block()
     startActivity(intent)
 }
 
-inline fun <reified T> Activity.startActivityForResult(requestCode: Int) {
+inline fun <reified T> Context.startActivity() {
+    startActivity<T> {}
+}
+
+inline fun <reified T> Activity.startActivityForResult(requestCode: Int, block: Intent.() -> Unit) {
     val intent = Intent(this, T::class.java)
+    intent.block()
     startActivityForResult(intent, requestCode)
+}
+
+inline fun <reified T> Activity.startActivityForResult(requestCode: Int) {
+    startActivityForResult<T> (requestCode) {}
 }
 
 inline fun debug(r: () -> Unit) {
@@ -84,4 +96,15 @@ inline fun <reified T : Parcelable> parcelableCreatorOf(): Parcelable.Creator<T>
 
 inline fun <reified T> Parcel.readMutableList(): MutableList<T> {
     return readArrayList(T::class.java.classLoader) as MutableList<T>
+}
+
+fun checkTextInputEmpty(edit: EditText, layout: TextInputLayout, error: String): Pair<Boolean, String> {
+    val text = edit.text.toString()
+    if (text.isEmpty()) {
+        layout.error = error
+        return true to ""
+    } else {
+        layout.error = null
+        return false to text
+    }
 }

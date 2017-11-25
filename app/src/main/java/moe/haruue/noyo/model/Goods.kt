@@ -14,15 +14,15 @@ import moe.haruue.noyo.utils.readMutableList
 @Suppress("MemberVisibilityCanPrivate")
 data class Goods(
         @SerializedName("_id") val id: String = "",
-        val title: String = "",
-        val summary: String = "",
-        val count: Int = 0,
-        val price: Double = 0.0,
-        val image: String? = "",
-        @Type val type: String = "",
-        val seller: String = "",
-        val orders: MutableList<Order> = mutableListOf(),
-        val address: String
+        var title: String = "",
+        var summary: String = "",
+        var count: Int = 0,
+        var price: Double = 0.0,
+        var image: String? = "",
+        @Type var type: String = "",
+        var seller: String = "",
+        var orders: MutableList<Order> = mutableListOf(),
+        var address: String
 ) : Parcelable {
 
     @Suppress("unused")

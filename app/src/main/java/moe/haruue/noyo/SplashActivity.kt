@@ -3,7 +3,6 @@ package moe.haruue.noyo
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import kotlinx.android.synthetic.main.activity_splash.*
 
@@ -11,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_splash.*
  *
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

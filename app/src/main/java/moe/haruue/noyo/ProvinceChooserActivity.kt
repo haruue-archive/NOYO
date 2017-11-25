@@ -3,7 +3,6 @@ package moe.haruue.noyo
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -17,7 +16,7 @@ import moe.haruue.noyo.utils.logd
  *
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
-class ProvinceChooserActivity : AppCompatActivity() {
+class ProvinceChooserActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_PROVINCE = "province"

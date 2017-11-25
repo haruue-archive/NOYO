@@ -18,8 +18,8 @@ class Member(
         var password: String? = "",
         var email: String = "",
         province: String = DEFAULT_PROVINCE,
-        val role: String = "",
-        val orders: MutableList<Order> = mutableListOf()
+        var role: String = "",
+        var orders: MutableList<Order> = mutableListOf()
 ) : Parcelable {
 
 
@@ -40,6 +40,7 @@ class Member(
             }
         }
 
+    @Suppress("unused")
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
@@ -58,6 +59,9 @@ class Member(
         val INVALID_USER = Member("-1", "", "", "", "", "", "", mutableListOf())
         const val ROLE_CONSUMER = "consumer"
         const val ROLE_FARMER = "farmer"
+
+        val ROLES = listOf(ROLE_CONSUMER, ROLE_FARMER)
+
         val DEFAULT_PROVINCE = "北京"
         val PROVINCES = arrayOf(
                 "北京",
