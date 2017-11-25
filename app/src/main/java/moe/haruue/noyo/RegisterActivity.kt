@@ -50,6 +50,13 @@ class RegisterActivity : BaseActivity() {
                 emailLayout.error = null
             }
 
+            if (!username.isValidateUsername()) {
+                usernameLayout.error = "用户名至少由 5 个字母和数字组成，且不能以数字开头"
+                return@setOnClickListener
+            } else {
+                usernameLayout.error = null
+            }
+
             button1.visibility = View.INVISIBLE
             progress.visibility = View.VISIBLE
 
@@ -74,6 +81,7 @@ class RegisterActivity : BaseActivity() {
                                 APIErrorList.emailMalformed -> { emailLayout.error = "邮箱格式不正确" }
                                 APIErrorList.emailUsed -> { emailLayout.error = "此邮箱已被注册，请尝试直接登录或者找回密码" }
                                 APIErrorList.usernameUsed -> { usernameLayout.error = "用户名已被占用，请尝试使用其它用户名注册" }
+                                APIErrorList.usernameMalformed -> { usernameLayout.error = "用户名至少由 5 个字母和数字组成，且不能以数字开头" }
                                 APIErrorList.passwordTooShort,
                                 APIErrorList.passwordTooLong,
                                 APIErrorList.passwordWeak1,

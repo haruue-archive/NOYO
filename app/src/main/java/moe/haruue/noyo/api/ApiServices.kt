@@ -68,7 +68,13 @@ interface ApiServices {
     @POST("account/logout")
     fun logout(): Observable<APIResultWrapper<Nothing>>
 
-    @POST("account/logout/{what}")
+    @POST("account/update/{what}")
+    @FormUrlEncoded
+    fun accountUpdate(@Path("what") what: String,
+                      @Field("value") value: String,
+                      @Field("old") old: String = "")
+
+    @POST("account/verify/{what}")
     @FormUrlEncoded
     fun accountVerify(@Path("what") what: String,
                       @Field("uid") uid: String,

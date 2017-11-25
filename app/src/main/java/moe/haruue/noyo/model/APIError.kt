@@ -18,6 +18,7 @@ object APIErrorList {
     const val emailUsed = 10004
     const val roleNotExist = 10005
     const val usernameUsed = 10006
+    const val usernameMalformed = 10007
     const val passwordEmpty = 20001
     const val passwordTooShort = 20002
     const val passwordTooLong = 20003

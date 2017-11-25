@@ -51,10 +51,6 @@ class Member(
             parcel.readString(),
             parcel.readMutableList())
 
-    fun sync(preferUpload: Boolean) {
-        // TODO: implement it to upload or download userdata
-    }
-
     companion object {
         val INVALID_USER = Member("-1", "", "", "", "", "", "", mutableListOf())
         const val ROLE_CONSUMER = "consumer"
