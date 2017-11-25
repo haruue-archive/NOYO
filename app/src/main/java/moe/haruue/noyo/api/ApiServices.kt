@@ -72,7 +72,7 @@ interface ApiServices {
     @FormUrlEncoded
     fun accountUpdate(@Path("what") what: String,
                       @Field("value") value: String,
-                      @Field("old") old: String = "")
+                      @Field("old") old: String = ""): Observable<APIResultWrapper<Member>>
 
     @POST("account/verify/{what}")
     @FormUrlEncoded

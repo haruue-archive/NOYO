@@ -9,8 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import moe.haruue.noyo.api.ApiServices
 import moe.haruue.noyo.model.Member
-import moe.haruue.noyo.utils.logd
+import moe.haruue.noyo.utils.createApiSubscriber
+import moe.haruue.noyo.utils.toast
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 /**
  *
@@ -34,9 +38,20 @@ class ProvinceChooserActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = ProvinceItemAdapter {
-            logd("ProvinceItemAdapter: province=$it")
+            ApiServices.v1service.accountUpdate("city", it)
+                    .subscribeOn(Schedulers.io())
+                    .unsubscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(createApiSubscriber {
+                        onNext = {
+                            App.instance.member = it.data ?: App.instance.member
+                            toast("更改地区信息成功")
+                        }
+                        onApiError = {
+                            toast("暂时无法更改您所在的城市，请稍后再试")
+                        }
+                    })
             App.instance.member.province = it
-            App.instance.member.sync(true)
             val resultIntent = Intent()
             resultIntent.putExtra(EXTRA_PROVINCE, it)
             setResult(Activity.RESULT_OK, resultIntent)
