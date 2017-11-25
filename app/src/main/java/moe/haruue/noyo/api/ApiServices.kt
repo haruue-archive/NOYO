@@ -24,7 +24,7 @@ interface ApiServices {
 
     companion object {
         private val client = with(OkHttpClient.Builder()) {
-            cookieJar(PersistentCookieJar())
+            cookieJar(PersistentCookieJar)
             followRedirects(true)
             followSslRedirects(true)
             readTimeout(10, TimeUnit.SECONDS)
@@ -63,11 +63,9 @@ interface ApiServices {
               @Field("persist") persist: Int): Observable<APIResultWrapper<Member>>
 
     @POST("account/info")
-    @FormUrlEncoded
     fun accountInfo(): Observable<APIResultWrapper<Member>>
 
     @POST("account/logout")
-    @FormUrlEncoded
     fun logout(): Observable<APIResultWrapper<Nothing>>
 
     @POST("account/logout/{what}")
@@ -117,7 +115,6 @@ interface ApiServices {
                     @Field("external") external: String): Observable<APIResultWrapper<Order>>
 
     @POST("order/list")
-    @FormUrlEncoded
     fun listOrder(): Observable<APIResultWrapper<MutableList<Order>>>
 
     @POST("order/cancel")

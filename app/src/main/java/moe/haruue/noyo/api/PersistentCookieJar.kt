@@ -13,14 +13,19 @@ import java.io.File
  *
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
-class PersistentCookieJar : CookieJar {
+object PersistentCookieJar : CookieJar {
 
-    companion object {
-        val gson = Gson()
-    }
+    val gson = Gson()
 
     private val cookieDir by lazy {
-        File(App.instance.filesDir, "cookies")
+        val dir = File(App.instance.filesDir, "cookies")
+        if (!dir.isDirectory) {
+            dir.delete()
+        }
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
+        dir
     }
 
     private fun cookieFileForUrl(url: HttpUrl): File = File(cookieDir, url.host())
@@ -40,6 +45,12 @@ class PersistentCookieJar : CookieJar {
         }
         cookies = cookies ?: mutableListOf()
         return cookies
+    }
+
+    fun clearAllCookies() {
+        cookieDir.listFiles()?.forEach {
+            it.deleteRecursively()
+        }
     }
 
 }

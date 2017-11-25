@@ -93,6 +93,26 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        with(outState) {
+            putString("username", usernameEditText.text.toString())
+            putString("password", passwordEditText.text.toString())
+            putString("email", emailEditText.text.toString())
+            putString("nickname", nickEditText.text.toString())
+        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        with(savedInstanceState) {
+            usernameEditText.setText(getString("username"))
+            passwordEditText.setText(getString("password"))
+            emailEditText.setText(getString("email"))
+            nickEditText.setText(getString("nickname"))
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         apiRequestSubscription?.unsubscribe()

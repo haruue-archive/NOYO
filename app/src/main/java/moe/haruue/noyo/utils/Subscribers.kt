@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import moe.haruue.noyo.App
 import moe.haruue.noyo.model.APIError
 import moe.haruue.noyo.model.APIErrorList
+import moe.haruue.noyo.model.Member
 import retrofit2.HttpException
 import rx.Subscriber
 import java.io.IOException
@@ -62,6 +63,8 @@ open class ApiSubscriber<T>(
                 val err = e.readApiError()
                 logw("$where#onApiError: $err")
                 if (err.code == 401) {
+                    App.instance.toast("身份信息过期，请重新登录")
+                    App.instance.member = Member.INVALID_USER
                     RxBus.post(Events.AuthorizationRequiredEvent())
                     return
                 }

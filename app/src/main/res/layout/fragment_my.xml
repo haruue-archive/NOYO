@@ -91,18 +91,31 @@
             android:layout_height="0.5dp"
             android:background="@color/bg_div_list"/>
 
-        <TextView
-            android:id="@+id/logoutItemButton"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_margin="15dp"
-            android:text="@string/logout"
-            android:textSize="18sp"
-            android:textColor="@android:color/white"
-            android:background="@android:color/holo_red_dark"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"/>
+            android:layout_margin="10dp">
+
+            <TextView
+                android:id="@+id/logoutItemButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:text="@string/logout"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:background="@android:color/holo_red_dark"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"/>
+
+            <ProgressBar
+                android:id="@+id/logoutProgress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"/>
+
+        </FrameLayout>
 
     </LinearLayout>
 

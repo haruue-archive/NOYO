@@ -16,16 +16,32 @@ import rx.android.schedulers.AndroidSchedulers
 @SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity() {
 
-    var authorizationRequiredEventObserver: Subscription? = null
+    private var authorizationRequiredEventObserver: Subscription? = null
+    protected var isForeground: Boolean = false
+        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         authorizationRequiredEventObserver = RxBus.observableOf<Events.AuthorizationRequiredEvent>()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    startActivity<SplashActivity>()
-                    finish()
+                    if (isForeground && this !is SplashActivity) {
+                        startActivity<SplashActivity>()
+                    }
+                    if (this !is SplashActivity) {
+                        finish()
+                    }
                 }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isForeground = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isForeground = false
     }
 
     override fun onDestroy() {

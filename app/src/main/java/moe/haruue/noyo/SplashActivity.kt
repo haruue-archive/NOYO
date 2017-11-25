@@ -17,8 +17,8 @@ class SplashActivity : BaseActivity() {
         setContentView(R.layout.activity_splash)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         if (App.instance.logined) {
             loginPanel.visibility = View.GONE
             Handler().postDelayed({
