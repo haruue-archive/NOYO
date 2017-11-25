@@ -8,10 +8,7 @@ import kotlinx.android.synthetic.main.activity_register.*
 import moe.haruue.noyo.api.ApiServices
 import moe.haruue.noyo.model.APIErrorList
 import moe.haruue.noyo.model.Member
-import moe.haruue.noyo.utils.checkTextInputEmpty
-import moe.haruue.noyo.utils.createApiSubscriber
-import moe.haruue.noyo.utils.startActivity
-import moe.haruue.noyo.utils.toast
+import moe.haruue.noyo.utils.*
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -46,7 +43,7 @@ class RegisterActivity : BaseActivity() {
 
             if (ue || pe || ne || ee) return@setOnClickListener
 
-            if (!email.matches(Regex("^[1-9a-zA-Z+.]+@[1-9a-zA-Z.]+[1-9a-zA-Z]+\\.[1-9a-zA-Z]+$"))) {
+            if (!email.isValidateEmail()) {
                 emailLayout.error = "邮箱格式不正确"
                 return@setOnClickListener
             } else {

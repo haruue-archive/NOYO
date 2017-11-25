@@ -108,3 +108,7 @@ fun checkTextInputEmpty(edit: EditText, layout: TextInputLayout, error: String):
         return false to text
     }
 }
+
+fun String?.isValidateEmail(): Boolean {
+    return this?.matches(Regex("^[1-9a-zA-Z+.]+@[1-9a-zA-Z.]*[1-9a-zA-Z]+\\.[1-9a-zA-Z]+$")) ?: false
+}
