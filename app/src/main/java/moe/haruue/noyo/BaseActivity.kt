@@ -16,13 +16,19 @@ import rx.android.schedulers.AndroidSchedulers
 @SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity() {
 
-    private var authorizationRequiredEventObserver: Subscription? = null
+    private val subscriptions = mutableListOf<Subscription>()
+
+    fun Subscription.lifecycleUnsubscribe(): Subscription {
+        subscriptions.add(this)
+        return this
+    }
+
     protected var isForeground: Boolean = false
         private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authorizationRequiredEventObserver = RxBus.observableOf<Events.AuthorizationRequiredEvent>()
+        RxBus.observableOf<Events.AuthorizationRequiredEvent>()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     if (isForeground && this !is SplashActivity) {
@@ -32,6 +38,7 @@ open class BaseActivity : AppCompatActivity() {
                         finish()
                     }
                 }
+                .lifecycleUnsubscribe()
     }
 
     override fun onResume() {
@@ -46,7 +53,9 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        authorizationRequiredEventObserver?.unsubscribe()
+        subscriptions.forEach {
+            if (!it.isUnsubscribed) it.unsubscribe()
+        }
     }
 
 }

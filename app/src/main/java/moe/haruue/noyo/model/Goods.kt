@@ -22,7 +22,7 @@ data class Goods(
         @Type var type: String = "",
         var seller: String = "",
         var orders: MutableList<Order> = mutableListOf(),
-        var address: String
+        var address: String = ""
 ) : Parcelable {
 
     @Suppress("unused")

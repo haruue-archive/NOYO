@@ -58,6 +58,7 @@ class ModifyPasswordActivity : BaseActivity() {
                             progress.visibility = View.INVISIBLE
                         }
                     })
+                    .lifecycleUnsubscribe()
         }
 
     }

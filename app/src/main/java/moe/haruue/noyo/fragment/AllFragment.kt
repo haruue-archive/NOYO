@@ -3,7 +3,6 @@ package moe.haruue.noyo.fragment
 import android.os.Bundle
 import android.support.annotation.Keep
 import android.support.annotation.LayoutRes
-import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -21,7 +20,7 @@ import moe.haruue.noyo.utils.TextViewStringDelegate
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
 @Keep
-class AllFragment : Fragment() {
+class AllFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_all, container, false)

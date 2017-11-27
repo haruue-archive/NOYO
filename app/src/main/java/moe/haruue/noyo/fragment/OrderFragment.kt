@@ -3,7 +3,6 @@ package moe.haruue.noyo.fragment
 import android.os.Bundle
 import android.support.annotation.IntDef
 import android.support.annotation.Keep
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -18,7 +17,6 @@ import moe.haruue.noyo.model.Order
 import moe.haruue.noyo.utils.TextViewPriceDelegate
 import moe.haruue.noyo.utils.TextViewStringDelegate
 import moe.haruue.noyo.utils.createApiSubscriber
-import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -27,13 +25,11 @@ import rx.schedulers.Schedulers
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
 @Keep
-class OrderFragment : Fragment() {
+class OrderFragment : BaseFragment() {
 
     private val adapter = OrderAdapter(this::onEmpty, this::onLoaded) {
         // TODO: on order item on click here
     }
-
-    private var apiServiceSubscription: Subscription? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_order, container, false)
@@ -57,7 +53,7 @@ class OrderFragment : Fragment() {
     }
 
     fun refresh() {
-        apiServiceSubscription = ApiServices.v1service.listOrder()
+        ApiServices.v1service.listOrder()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -74,6 +70,7 @@ class OrderFragment : Fragment() {
                     onNetworkError = { onError() }
                     onOtherError = { onError() }
                 })
+                .lifecycleUnsubscribe()
     }
 
     fun onEmpty() {
@@ -101,11 +98,6 @@ class OrderFragment : Fragment() {
         progress.isRefreshing = false
         error.visibility = View.VISIBLE
         empty.visibility = View.GONE
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        apiServiceSubscription?.unsubscribe()
     }
 
     private class OrderAdapter(

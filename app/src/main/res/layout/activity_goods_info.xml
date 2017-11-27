@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="#d0d0d0">
+
+        <LinearLayout
+            android:id="@+id/consumerPanel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/contact"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@android:color/holo_blue_dark"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="联系卖家"
+                android:textSize="20sp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/buy"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@android:color/holo_orange_dark"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="立即购买"
+                android:textSize="20sp"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ownerPanel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            tools:layout_alignParentRight="false"
+            android:visibility="gone"
+            tools:visibility="invisible">
+
+            <TextView
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@android:color/holo_red_dark"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="下架商品"
+                android:textSize="20sp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@android:id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@android:color/holo_green_dark"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="编辑商品"
+                android:textSize="20sp"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/noPermissionTip"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@android:color/darker_gray"
+            android:gravity="center"
+            android:text="消费者帐号才能购买哦"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            tools:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@android:id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomBar">
+
+        <android.support.v4.widget.NestedScrollView
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/ph_no_pic"
+                    android:background="#f0f0f0"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/titleView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="土地租赁 - 土豆种植"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/summaryView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="服务器级别，客户包括到玉碧、B站等高端互联网企业。"/>
+
+                    <TextView
+                        android:id="@+id/addressView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="重庆没电大学农业学院附属农场"/>
+
+                    <TextView
+                        android:id="@+id/countView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="剩余 50 件"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>
+
+

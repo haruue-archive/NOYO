@@ -44,6 +44,7 @@ class MainActivity : BaseActivity() {
                         toast("同步用户信息失败")
                     }
                 })
+                .lifecycleUnsubscribe()
     }
 
     fun onReloadProvince() {

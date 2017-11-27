@@ -55,6 +55,10 @@
                 android:value=".MainActivity"/>
         </activity>
         <activity android:name=".GoodsActivity"/>
+        <activity android:name=".CreateGoodsActivity"/>
+        <activity android:name=".CreateOrderActivity"/>
+        <activity android:name=".GoodsInfoActivity"/>
+        <activity android:name=".OrderInfoActivity"/>
 
     </application>
 </manifest>

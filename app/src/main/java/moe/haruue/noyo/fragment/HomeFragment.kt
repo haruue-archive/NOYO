@@ -2,7 +2,6 @@ package moe.haruue.noyo.fragment
 
 import android.os.Bundle
 import android.support.annotation.Keep
-import android.support.v4.app.Fragment
 import android.support.v7.widget.AppCompatImageView
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,7 @@ import moe.haruue.noyo.utils.startActivity
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
 @Keep
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_home, container, false)
     }

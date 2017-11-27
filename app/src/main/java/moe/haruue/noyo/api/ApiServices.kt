@@ -113,6 +113,10 @@ interface ApiServices {
                     @Field("address") address: String,
                     @Field("image") image: String = ""): Observable<APIResultWrapper<Goods>>
 
+    @POST("goods/info")
+    @FormUrlEncoded
+    fun infoGoods(@Field("_id") id: String): Observable<APIResultWrapper<Goods>>
+
     @POST("order/create")
     @FormUrlEncoded
     fun createOrder(@Field("goodsId") goodsId: String,
@@ -127,4 +131,7 @@ interface ApiServices {
     @FormUrlEncoded
     fun cancelOrder(@Field("_id") id: String): Observable<APIResultWrapper<Order>>
 
+    @POST("order/info")
+    @FormUrlEncoded
+    fun infoOrder(@Field("_id") id: String): Observable<APIResultWrapper<Order>>
 }

@@ -13,7 +13,6 @@ import moe.haruue.noyo.model.APIErrorList
 import moe.haruue.noyo.utils.createApiSubscriber
 import moe.haruue.noyo.utils.isValidateEmail
 import moe.haruue.noyo.utils.toast
-import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -39,8 +38,6 @@ class ModifyAccountActivity : BaseActivity() {
     }
 
     @What val what by lazy { intent?.getIntExtra(EXTRA_WHAT, WHAT_NICKNAME) ?: WHAT_NICKNAME }
-
-    private var apiAccountUpdateSubscription: Subscription? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +79,7 @@ class ModifyAccountActivity : BaseActivity() {
             button1.visibility = View.INVISIBLE
             progress.visibility = View.VISIBLE
 
-            apiAccountUpdateSubscription = ApiServices.v1service.accountUpdate(paramWhat, paramValue)
+            ApiServices.v1service.accountUpdate(paramWhat, paramValue)
                     .subscribeOn(Schedulers.io())
                     .unsubscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -105,15 +102,9 @@ class ModifyAccountActivity : BaseActivity() {
                             progress.visibility = View.INVISIBLE
                         }
                     })
-
-
+                    .lifecycleUnsubscribe()
         }
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        apiAccountUpdateSubscription?.unsubscribe()
     }
 
     @IntDef(WHAT_NICKNAME.toLong(),

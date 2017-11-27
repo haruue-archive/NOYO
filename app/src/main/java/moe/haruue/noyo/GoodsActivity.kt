@@ -11,10 +11,7 @@ import kotlinx.android.synthetic.main.activity_goods.*
 import moe.haruue.noyo.api.ApiServices
 import moe.haruue.noyo.model.Goods
 import moe.haruue.noyo.model.Member
-import moe.haruue.noyo.utils.TextViewPriceDelegate
-import moe.haruue.noyo.utils.TextViewStringDelegate
-import moe.haruue.noyo.utils.createApiSubscriber
-import rx.Subscription
+import moe.haruue.noyo.utils.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -25,7 +22,9 @@ import rx.schedulers.Schedulers
 class GoodsActivity : BaseActivity() {
 
     private val adapter = GoodsAdapter(this::onEmpty, this::onLoaded) {
-        // TODO: on item click here
+        startActivity<GoodsInfoActivity> {
+            putExtra(GoodsInfoActivity.EXTRA_GOODS, it)
+        }
     }
 
     companion object {
@@ -34,9 +33,7 @@ class GoodsActivity : BaseActivity() {
         const val TYPE_PRE_SELL = "product"
     }
 
-    val type by lazy { intent?.getStringExtra(EXTRA_TYPE) ?: TYPE_PRE_SELL }
-
-    private var apiServiceSubscription: Subscription? = null
+    val type by StringExtraDelegate(intent, EXTRA_TYPE, TYPE_PRE_SELL)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +62,7 @@ class GoodsActivity : BaseActivity() {
     }
 
     fun refresh() {
-        apiServiceSubscription = ApiServices.v1service.listGoods(type)
+        ApiServices.v1service.listGoods(type)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -82,6 +79,7 @@ class GoodsActivity : BaseActivity() {
                     onNetworkError = { onError() }
                     onOtherError = { onError() }
                 })
+                .lifecycleUnsubscribe()
     }
 
     fun onEmpty() {
@@ -109,11 +107,6 @@ class GoodsActivity : BaseActivity() {
         progress.isRefreshing = false
         error.visibility = View.VISIBLE
         empty.visibility = View.GONE
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        apiServiceSubscription?.unsubscribe()
     }
 
     private class GoodsAdapter(

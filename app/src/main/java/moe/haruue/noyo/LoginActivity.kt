@@ -8,7 +8,6 @@ import moe.haruue.noyo.model.APIErrorList
 import moe.haruue.noyo.utils.checkTextInputEmpty
 import moe.haruue.noyo.utils.createApiSubscriber
 import moe.haruue.noyo.utils.toast
-import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -22,8 +21,6 @@ class LoginActivity : BaseActivity() {
         const val EXTRA_USERNAME = "username"
         const val EXTRA_PASSWORD = "password"
     }
-
-    var apiRequestSubscription: Subscription? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +46,7 @@ class LoginActivity : BaseActivity() {
             button1.visibility = View.INVISIBLE
             progress.visibility = View.VISIBLE
 
-            apiRequestSubscription = ApiServices.v1service.login(username, password, 1)
+            ApiServices.v1service.login(username, password, 1)
                     .subscribeOn(Schedulers.io())
                     .unsubscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -77,6 +74,7 @@ class LoginActivity : BaseActivity() {
                             progress.visibility = View.INVISIBLE
                         }
                     })
+                    .lifecycleUnsubscribe()
         }
     }
 
@@ -94,11 +92,6 @@ class LoginActivity : BaseActivity() {
             usernameEditText.setText(getString("username"))
             passwordEditText.setText(getString("password"))
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        apiRequestSubscription?.unsubscribe()
     }
 
 }
