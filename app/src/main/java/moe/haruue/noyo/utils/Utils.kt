@@ -10,10 +10,12 @@ import android.os.Parcelable
 import android.support.annotation.IntDef
 import android.support.annotation.StringRes
 import android.support.design.widget.TextInputLayout
+import android.support.v4.app.Fragment
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import moe.haruue.noyo.BuildConfig
+import java.util.*
 
 /**
  *
@@ -55,6 +57,26 @@ inline fun <reified T> Activity.startActivityForResult(requestCode: Int) {
     startActivityForResult<T> (requestCode) {}
 }
 
+inline fun <reified T> Fragment.startActivity(block: Intent.() -> Unit) {
+    val intent = Intent(this.activity, T::class.java)
+    intent.block()
+    startActivity(intent)
+}
+
+inline fun <reified T> Fragment.startActivity() {
+    startActivity<T> {}
+}
+
+inline fun <reified T> Fragment.startActivityForResult(requestCode: Int, block: Intent.() -> Unit) {
+    val intent = Intent(this.activity, T::class.java)
+    intent.block()
+    startActivityForResult(intent, requestCode)
+}
+
+inline fun <reified T> Fragment.startActivityForResult(requestCode: Int) {
+    startActivityForResult<T> (requestCode) {}
+}
+
 inline fun debug(r: () -> Unit) {
     return when {
         BuildConfig.DEBUG -> r()
@@ -84,6 +106,27 @@ fun Any.logw(msg: String, e: Throwable? = null) = internalLog(Log::w, Log::w, th
 fun Any.loge(msg: String, e: Throwable? = null) = internalLog(Log::e, Log::e, this.javaClass.simpleName, msg, e)
 
 fun Any.logwtf(msg: String, e: Throwable? = null) = internalLog(Log::wtf, Log::wtf, this.javaClass.simpleName, msg, e)
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun Any.logmInternal(msg: String) {
+    val s = Exception().stackTrace[0]
+    logd("${s.className}\$${s.methodName}: $msg}")
+}
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun Any.logm(vararg args: Any) {
+    logmInternal(Arrays.toString(args))
+}
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun Any.logr(rv: Any) {
+    val message = if (rv is Array<*>) {
+        Arrays.toString(rv)
+    } else {
+        rv.toString()
+    }
+    logmInternal(message)
+}
 
 inline fun <reified T : Parcelable> parcelableCreatorOf(): Parcelable.Creator<T> = object : Parcelable.Creator<T> {
     override fun newArray(size: Int): Array<T?> = arrayOfNulls(size)

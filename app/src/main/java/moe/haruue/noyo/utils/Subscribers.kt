@@ -69,7 +69,11 @@ open class ApiSubscriber<T>(
                     return
                 }
                 if (err.code == 500 && err.errno == APIErrorList.unexpectedDatabaseError) {
-                    App.instance.toast("发生未知错误，请与客户服务联系")
+                    App.instance.toast("发生未知错误，请与客户服务联系", Toast.LENGTH_LONG)
+                    return
+                }
+                if (err.code == 403) {
+                    App.instance.toast("您当前登录的账户的权限不足以进行此操作", Toast.LENGTH_LONG)
                     return
                 }
                 onApiError(err)

@@ -11,10 +11,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_order.*
+import moe.haruue.noyo.App
 import moe.haruue.noyo.R
+import moe.haruue.noyo.api.ApiServices
 import moe.haruue.noyo.model.Order
 import moe.haruue.noyo.utils.TextViewPriceDelegate
 import moe.haruue.noyo.utils.TextViewStringDelegate
+import moe.haruue.noyo.utils.createApiSubscriber
+import rx.Subscription
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 /**
  *
@@ -27,6 +33,8 @@ class OrderFragment : Fragment() {
         // TODO: on order item on click here
     }
 
+    private var apiServiceSubscription: Subscription? = null
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_order, container, false)
     }
@@ -37,10 +45,35 @@ class OrderFragment : Fragment() {
         progress.setOnRefreshListener { refresh() }
         list.layoutManager = LinearLayoutManager(activity)
         list.adapter = adapter
+        adapter.data.clear()
+        adapter.data.addAll(App.instance.member.orders)
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        onLoading()
+        refresh()
     }
 
     fun refresh() {
-        // TODO: refresh here, write data to [OrderAdapter.data] and then notifyDataSetChanged
+        apiServiceSubscription = ApiServices.v1service.listOrder()
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(createApiSubscriber {
+                    onNext = {
+                        adapter.data.clear()
+                        val data = it.data ?: App.instance.member.orders
+                        if (data.isEmpty()) {
+                            onEmpty()
+                        }
+                        adapter.data.addAll(it.data ?: App.instance.member.orders)
+                        adapter.notifyDataSetChanged()
+                    }
+                    onNetworkError = { onError() }
+                    onOtherError = { onError() }
+                })
     }
 
     fun onEmpty() {
@@ -58,7 +91,6 @@ class OrderFragment : Fragment() {
     }
 
     fun onLoading() {
-        list.visibility = View.GONE
         progress.isRefreshing = true
         error.visibility = View.GONE
         empty.visibility = View.GONE
@@ -69,6 +101,11 @@ class OrderFragment : Fragment() {
         progress.isRefreshing = false
         error.visibility = View.VISIBLE
         empty.visibility = View.GONE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        apiServiceSubscription?.unsubscribe()
     }
 
     private class OrderAdapter(
@@ -94,6 +131,7 @@ class OrderFragment : Fragment() {
                 Order.STATUS_HARVESTED -> OrderFragment.STATUS_HARVESTED
                 Order.STATUS_TRANSPORT -> OrderFragment.STATUS_TRANSPORT
                 Order.STATUS_DELIVERED -> OrderFragment.STATUS_DELIVERED
+                Order.STATUS_CANCELLED -> OrderFragment.STATUS_CANCELLED
                 else -> throw IllegalArgumentException("If you add new status, please modify OrderAdapter.onBindViewHolder");
             }
             holder.itemView.setOnClickListener {
@@ -135,6 +173,7 @@ class OrderFragment : Fragment() {
         const val STATUS_HARVESTED = R.string.status_harvested
         const val STATUS_TRANSPORT = R.string.status_transport
         const val STATUS_DELIVERED = R.string.status_delivered
+        const val STATUS_CANCELLED = R.string.status_cancelled
     }
 
     @IntDef(STATUS_WAITING_PAY.toLong(),
@@ -144,7 +183,8 @@ class OrderFragment : Fragment() {
             STATUS_WAITING_HARVEST.toLong(),
             STATUS_HARVESTED.toLong(),
             STATUS_TRANSPORT.toLong(),
-            STATUS_DELIVERED.toLong())
+            STATUS_DELIVERED.toLong(),
+            STATUS_CANCELLED.toLong())
     @Retention(AnnotationRetention.SOURCE)
     annotation class Status
 }

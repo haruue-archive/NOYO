@@ -10,8 +10,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.jude.rollviewpager.adapter.StaticPagerAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
+import moe.haruue.noyo.GoodsActivity
 import moe.haruue.noyo.R
-
+import moe.haruue.noyo.utils.startActivity
 
 
 /**
@@ -42,10 +43,14 @@ class HomeFragment : Fragment() {
             }
         })
         buttonRentFarm.setOnClickListener {
-
+            startActivity<GoodsActivity> {
+                putExtra(GoodsActivity.EXTRA_TYPE, GoodsActivity.TYPE_RENT_FARM)
+            }
         }
         buttonPreSell.setOnClickListener {
-
+            startActivity<GoodsActivity> {
+                putExtra(GoodsActivity.EXTRA_TYPE, GoodsActivity.TYPE_PRE_SELL)
+            }
         }
     }
 

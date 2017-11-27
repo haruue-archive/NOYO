@@ -50,6 +50,7 @@ data class Order(
         const val STATUS_HARVESTED = 5
         const val STATUS_TRANSPORT = 6
         const val STATUS_DELIVERED = 7
+        const val STATUS_CANCELLED = -1
 
         @Suppress("unused")
         val CREATOR = parcelableCreatorOf<Order>()
