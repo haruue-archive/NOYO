@@ -22,7 +22,8 @@ open class ApiSubscriber<T>(
         private val onErrorCallback: ((e: Throwable) -> Unit)?,
         private val onNextCallback: ((t: T) -> Unit)?,
         private val onCompleteCallback: (() -> Unit)?,
-        private val onFinallyCallback: (() -> Unit)?
+        private val onFinallyCallback: (() -> Unit)?,
+        private val onStartCallback: (() -> Unit)?
 ) : Subscriber<T>() {
 
     @Suppress("MemberVisibilityCanPrivate")
@@ -35,10 +36,15 @@ open class ApiSubscriber<T>(
         var onNext: ((t: T) -> Unit)? = null
         var onComplete: (() -> Unit)? = null
         var onFinally: (() -> Unit)? = null
+        var onStart: (() -> Unit)? = null
 
         fun build(): ApiSubscriber<T> {
-            return ApiSubscriber(where, onApiError, onNetworkError, onOtherError, onError, onNext, onComplete, onFinally)
+            return ApiSubscriber(where, onApiError, onNetworkError, onOtherError, onError, onNext, onComplete, onFinally, onStart)
         }
+    }
+
+    override fun onStart() {
+        onStartCallback?.invoke()
     }
 
     open fun onApiError(e: APIError) {

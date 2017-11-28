@@ -97,6 +97,7 @@ class Member(
         )
 
         @Suppress("unused")
+        @JvmField
         val CREATOR = parcelableCreatorOf<Member>()
 
     }

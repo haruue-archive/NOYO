@@ -1,5 +1,6 @@
 package moe.haruue.noyo.utils
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Parcelable
 import android.widget.TextView
@@ -30,29 +31,31 @@ class TextViewPriceDelegate(private val textView: TextView) {
     }
 }
 
-class StringExtraDelegate(val intent: Intent?, val key: String, val defaultValue: String) {
+class StringExtraDelegate(val activity: Activity, val key: String, val defaultValue: String) {
 
     private var field: String? = null
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): String {
+        logd("${activity.intent?.toUri(Intent.URI_ALLOW_UNSAFE)}")
         if (field == null) {
-            field = intent?.getStringExtra(key) ?: defaultValue
+            field = activity.intent?.getStringExtra(key) ?: defaultValue
         }
         return field ?: defaultValue
     }
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
+        logm(value)
         field = value
     }
 }
 
-class ParcelableExtraDelegate<T : Parcelable>(val intent: Intent?, val key: String, val defaultValue: T) {
+class ParcelableExtraDelegate<T : Parcelable>(val activity: Activity, val key: String, val defaultValue: T) {
 
     private var field: T? = null
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
         if (field == null) {
-            field = intent?.getParcelableExtra(key) ?: defaultValue
+            field = activity.intent?.getParcelableExtra(key) ?: defaultValue
         }
         return field ?: defaultValue
     }

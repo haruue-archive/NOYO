@@ -1,7 +1,6 @@
 package moe.haruue.noyo.fragment
 
 import android.os.Bundle
-import android.support.annotation.IntDef
 import android.support.annotation.Keep
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -11,12 +10,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_order.*
 import moe.haruue.noyo.App
+import moe.haruue.noyo.OrderInfoActivity
 import moe.haruue.noyo.R
 import moe.haruue.noyo.api.ApiServices
 import moe.haruue.noyo.model.Order
 import moe.haruue.noyo.utils.TextViewPriceDelegate
 import moe.haruue.noyo.utils.TextViewStringDelegate
 import moe.haruue.noyo.utils.createApiSubscriber
+import moe.haruue.noyo.utils.startActivity
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -28,7 +29,9 @@ import rx.schedulers.Schedulers
 class OrderFragment : BaseFragment() {
 
     private val adapter = OrderAdapter(this::onEmpty, this::onLoaded) {
-        // TODO: on order item on click here
+        startActivity<OrderInfoActivity> {
+            putExtra(OrderInfoActivity.EXTRA_ORDER, it)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,11 +56,15 @@ class OrderFragment : BaseFragment() {
     }
 
     fun refresh() {
+        onLoading()
         ApiServices.v1service.listOrder()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(createApiSubscriber {
+                    onStart = {
+                        onLoading()
+                    }
                     onNext = {
                         adapter.data.clear()
                         val data = it.data ?: App.instance.member.orders
@@ -69,19 +76,20 @@ class OrderFragment : BaseFragment() {
                     }
                     onNetworkError = { onError() }
                     onOtherError = { onError() }
+                    onFinally = {
+                        progress.isRefreshing = false
+                    }
                 })
                 .lifecycleUnsubscribe()
     }
 
     fun onEmpty() {
-        list.visibility = View.GONE
         progress.isRefreshing = false
         error.visibility = View.GONE
         empty.visibility = View.VISIBLE
     }
 
     fun onLoaded() {
-        list.visibility = View.VISIBLE
         progress.isRefreshing = false
         error.visibility = View.GONE
         empty.visibility = View.GONE
@@ -94,7 +102,6 @@ class OrderFragment : BaseFragment() {
     }
 
     fun onError() {
-        list.visibility = View.GONE
         progress.isRefreshing = false
         error.visibility = View.VISIBLE
         empty.visibility = View.GONE
@@ -114,18 +121,7 @@ class OrderFragment : BaseFragment() {
             holder.title = title
             holder.summary = summary
             holder.price = price
-            holder.status = when (status) {
-                Order.STATUS_WAITING_PAY -> OrderFragment.STATUS_WAITING_PAY
-                Order.STATUS_PAID -> OrderFragment.STATUS_PAID
-                Order.STATUS_WAITING_PLANT -> OrderFragment.STATUS_WAITING_PLANT
-                Order.STATUS_PLANTED -> OrderFragment.STATUS_PLANTED
-                Order.STATUS_WAITING_HARVEST -> OrderFragment.STATUS_WAITING_HARVEST
-                Order.STATUS_HARVESTED -> OrderFragment.STATUS_HARVESTED
-                Order.STATUS_TRANSPORT -> OrderFragment.STATUS_TRANSPORT
-                Order.STATUS_DELIVERED -> OrderFragment.STATUS_DELIVERED
-                Order.STATUS_CANCELLED -> OrderFragment.STATUS_CANCELLED
-                else -> throw IllegalArgumentException("If you add new status, please modify OrderAdapter.onBindViewHolder");
-            }
+            holder.status = Order.getStringValsByStatus(status)
             holder.itemView.setOnClickListener {
                 onItemClick(this)
             }
@@ -148,36 +144,13 @@ class OrderFragment : BaseFragment() {
             var title by TextViewStringDelegate(titleView)
             var summary by TextViewStringDelegate(summaryView)
             var price by TextViewPriceDelegate(priceView)
-            var status = STATUS_WAITING_PAY
-                set(@Status value) {
+            var status = Order.StringVals.STATUS_WAITING_PAY
+                set(@Order.Status value) {
                     field = value
-                    statusView.setText(value)
+                    statusView.text = itemView.resources.getText(value)
                 }
         }
     }
 
-    companion object {
-        const val STATUS_WAITING_PAY = R.string.status_waiting_pay
-        const val STATUS_PAID = R.string.status_paid
-        const val STATUS_WAITING_PLANT = R.string.status_waiting_plant
-        const val STATUS_PLANTED = R.string.status_planted
-        const val STATUS_WAITING_HARVEST = R.string.status_waiting_harvest
-        const val STATUS_HARVESTED = R.string.status_harvested
-        const val STATUS_TRANSPORT = R.string.status_transport
-        const val STATUS_DELIVERED = R.string.status_delivered
-        const val STATUS_CANCELLED = R.string.status_cancelled
-    }
-
-    @IntDef(STATUS_WAITING_PAY.toLong(),
-            STATUS_PAID.toLong(),
-            STATUS_WAITING_PLANT.toLong(),
-            STATUS_PLANTED.toLong(),
-            STATUS_WAITING_HARVEST.toLong(),
-            STATUS_HARVESTED.toLong(),
-            STATUS_TRANSPORT.toLong(),
-            STATUS_DELIVERED.toLong(),
-            STATUS_CANCELLED.toLong())
-    @Retention(AnnotationRetention.SOURCE)
-    annotation class Status
 }
 

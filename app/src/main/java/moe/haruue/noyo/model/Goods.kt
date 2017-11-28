@@ -43,6 +43,7 @@ data class Goods(
         const val TYPE_PRODUCT = "product"
 
         @Suppress("unused")
+        @JvmField
         val CREATOR = parcelableCreatorOf<Goods>()
     }
 

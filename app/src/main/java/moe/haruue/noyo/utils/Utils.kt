@@ -4,13 +4,16 @@ package moe.haruue.noyo.utils
 
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Parcel
 import android.os.Parcelable
+import android.support.annotation.CheckResult
 import android.support.annotation.IntDef
 import android.support.annotation.StringRes
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
@@ -114,12 +117,12 @@ inline fun Any.logmInternal(msg: String) {
 }
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun Any.logm(vararg args: Any) {
+inline fun Any.logm(vararg args: Any?) {
     logmInternal(Arrays.toString(args))
 }
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun Any.logr(rv: Any) {
+inline fun Any.logr(rv: Any?) {
     val message = if (rv is Array<*>) {
         Arrays.toString(rv)
     } else {
@@ -158,4 +161,15 @@ fun String?.isValidateEmail(): Boolean {
 
 fun String?.isValidateUsername(): Boolean {
     return this?.matches(Regex("^[a-zA-Z_][a-zA-Z0-9_]{4,}$")) ?: false
+}
+
+@CheckResult
+fun Context.confirm(title: String, message: String, r: (dialog: DialogInterface, which: Int) -> Unit): AlertDialog {
+    return with(AlertDialog.Builder(this)) {
+        setTitle(title)
+        setMessage(message)
+        setPositiveButton(android.R.string.ok, r)
+        setNegativeButton(android.R.string.cancel, { _, _ -> })
+        create()
+    }
 }

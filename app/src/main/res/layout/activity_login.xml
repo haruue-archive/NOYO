@@ -76,6 +76,7 @@
             android:visibility="visible"
             android:background="@android:color/white"
             android:foreground="?attr/selectableItemBackground"
+            tools:foreground="@null"
             android:text="@string/login"/>
 
         <ProgressBar

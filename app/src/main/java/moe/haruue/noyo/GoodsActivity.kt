@@ -33,7 +33,7 @@ class GoodsActivity : BaseActivity() {
         const val TYPE_PRE_SELL = "product"
     }
 
-    val type by StringExtraDelegate(intent, EXTRA_TYPE, TYPE_PRE_SELL)
+    val type by StringExtraDelegate(this, EXTRA_TYPE, TYPE_RENT_FARM)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,10 +46,19 @@ class GoodsActivity : BaseActivity() {
                 supportActionBar?.title = "土地租赁"
             }
         }
+
+        fab.setOnClickListener {
+            startActivity<CreateGoodsActivity> {
+                putExtra(CreateGoodsActivity.EXTRA_ACTION, CreateGoodsActivity.ACTION_CREATE)
+                putExtra(CreateGoodsActivity.EXTRA_TYPE, this@GoodsActivity.type)
+            }
+        }
+
         when(App.instance.member.role) {
             Member.ROLE_FARMER -> fab.visibility = View.VISIBLE
             Member.ROLE_CONSUMER -> fab.visibility = View.GONE
         }
+
         progress.setOnRefreshListener { refresh() }
         list.layoutManager = LinearLayoutManager(this@GoodsActivity)
         list.adapter = adapter
@@ -62,35 +71,41 @@ class GoodsActivity : BaseActivity() {
     }
 
     fun refresh() {
+        onLoading()
         ApiServices.v1service.listGoods(type)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(createApiSubscriber {
+                    onStart = {
+                        onLoading()
+                    }
                     onNext = {
                         adapter.data.clear()
                         val data = it.data ?: mutableListOf()
                         if (data.isEmpty()) {
                             onEmpty()
                         }
+                        list.visibility = View.VISIBLE
                         adapter.data.addAll(data)
                         adapter.notifyDataSetChanged()
                     }
                     onNetworkError = { onError() }
                     onOtherError = { onError() }
+                    onFinally = {
+                        progress.isRefreshing = false
+                    }
                 })
                 .lifecycleUnsubscribe()
     }
 
     fun onEmpty() {
-        list.visibility = View.GONE
         progress.isRefreshing = false
         error.visibility = View.GONE
         empty.visibility = View.VISIBLE
     }
 
     fun onLoaded() {
-        list.visibility = View.VISIBLE
         progress.isRefreshing = false
         error.visibility = View.GONE
         empty.visibility = View.GONE
@@ -103,7 +118,6 @@ class GoodsActivity : BaseActivity() {
     }
 
     fun onError() {
-        list.visibility = View.GONE
         progress.isRefreshing = false
         error.visibility = View.VISIBLE
         empty.visibility = View.GONE
