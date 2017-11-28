@@ -141,6 +141,7 @@ inline fun <reified T : Parcelable> parcelableCreatorOf(): Parcelable.Creator<T>
 }
 
 inline fun <reified T> Parcel.readMutableList(): MutableList<T> {
+    @Suppress("UNCHECKED_CAST")
     return readArrayList(T::class.java.classLoader) as MutableList<T>
 }
 

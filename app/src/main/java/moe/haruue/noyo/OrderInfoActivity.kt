@@ -92,6 +92,7 @@ class OrderInfoActivity : BaseActivity() {
         supportActionBar?.title = "订单详情 - ${order.title}"
 
         if (!order.image.isNullOrEmpty()) {
+            @Suppress("DEPRECATION")
             Glide.with(this)
                     .load(order.image).into(imageView)
                     .onLoadFailed(resources.getDrawable(R.drawable.ph_no_pic))

@@ -55,6 +55,11 @@ class CreateOrderActivity : BaseActivity() {
         create.setOnClickListener {
             val (ce, countString) = checkTextInputEmpty(countEditText, countLayout, "数量不能为空")
             val (ae, address) = checkTextInputEmpty(addressEditText, addressLayout, "地址不能为空")
+
+            if (ce || ae) {
+                return@setOnClickListener
+            }
+
             val external = externalEditText.text.toString()
 
             val count = countString.toIntOrNull()

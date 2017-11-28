@@ -105,6 +105,7 @@ class GoodsInfoActivity : BaseActivity() {
         supportActionBar?.title = "商品详情 - ${goods.title}"
 
         if (!goods.image.isNullOrEmpty()) {
+            @Suppress("DEPRECATION")
             Glide.with(this)
                     .load(goods.image).into(imageView)
                     .onLoadFailed(resources.getDrawable(R.drawable.ph_no_pic))
