@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.jude.rollviewpager.adapter.StaticPagerAdapter
+import com.jude.rollviewpager.adapter.LoopPagerAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
 import moe.haruue.noyo.GoodsActivity
 import moe.haruue.noyo.R
@@ -26,8 +26,12 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rollViewPager.setAdapter(object: StaticPagerAdapter() {
-            val images = arrayOf(R.drawable.pager_default_0)
+        rollViewPager.setAdapter(object: LoopPagerAdapter(rollViewPager) {
+            override fun getRealCount(): Int {
+                return images.size
+            }
+
+            val images = arrayOf(R.drawable.pager_default_0, R.drawable.pager_default_1, R.drawable.pager_default_2, R.drawable.pager_default_3)
 
             override fun getView(container: ViewGroup, position: Int): View {
                 val image = AppCompatImageView(container.context)
@@ -35,10 +39,6 @@ class HomeFragment : BaseFragment() {
                 image.scaleType = ImageView.ScaleType.CENTER_CROP
                 image.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 return image
-            }
-
-            override fun getCount(): Int {
-                return images.size
             }
         })
         buttonRentFarm.setOnClickListener {
